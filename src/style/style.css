@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+}
+
+.planet{
+    padding: 5px;
+    background-image: linear-gradient(rgba(84,84,84,0.8), rgba(0,0,0,0.8));
+    position: fixed;
+    margin-top: 130px;
+    right: 0;
+    margin-right: 100px;
+    color: white;
+    width: 500px;
+    height: 800px;
+    opacity: 0;
+    border: 3px solid white;
+    border-radius: 25px;
+    display: none;
+    overflow: scroll;
+    overflow-x: hidden;
+    scrollbar-color: rgb(84,84,84);
+    
+}
+
+.planet::-webkit-scrollbar {
+    width: px;
+    height: 0px;
+  }
+
+.container img{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: none;
+}
