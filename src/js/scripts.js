@@ -1,9 +1,9 @@
+//Importing libraries
 import * as THREE from 'three';
-//import * as TWEEN from '@tweenjs/tween.js'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GUI} from 'dat.gui';
-import {CSS2DRenderer, CSS2DObject} from 'three/examples/jsm/renderers/CSS2DRenderer';
 
+//Importing textures
 import starsTexture from '../img/stars.jpg';
 import sunTexture from '../img/sun.jpg';
 import mercuryTexture from '../img/mercury.jpg';
@@ -33,6 +33,7 @@ renderer.domElement.style.opacity = '1';
 
 const scene = new THREE.Scene();
 
+//Main camera initialization
 const mainCamera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -40,6 +41,7 @@ const mainCamera = new THREE.PerspectiveCamera(
     1000
 );
 
+//Main camera positioning and movement
 const orbit = new OrbitControls(mainCamera, renderer.domElement);
 
 orbit.minDistance = defaultCameraMinDistance;
@@ -50,9 +52,12 @@ orbit.update();
 
 let activeCamera = mainCamera;
 
+//AmbientLignt initialization
 const ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
 
+
+//Background texture loader
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 scene.background = cubeTextureLoader.load([
     starsTexture,
@@ -65,7 +70,7 @@ scene.background = cubeTextureLoader.load([
 
 const textureLoader = new THREE.TextureLoader();
 
-//Planet cameras
+//Initalization planet cameras
 const sunCamera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -166,9 +171,6 @@ const plutoCamera = new THREE.PerspectiveCamera(
 plutoCamera.position.set(365, 4, 4);
 plutoCamera.lookAt(380,0,4);
 
-//Menu Bar
-createMenu();
-
 //Planet render
 const sunGeo = new THREE.SphereGeometry(26, 40, 40);
 const sunMat = new THREE.MeshBasicMaterial({
@@ -177,6 +179,7 @@ const sunMat = new THREE.MeshBasicMaterial({
 const sun = new THREE.Mesh(sunGeo, sunMat);
 scene.add(sun);
 
+//Creating planets
 function createPlanete(size, texture, position, ring) {
     const geo = new THREE.SphereGeometry(size, 30, 30);
     const mat = new THREE.MeshStandardMaterial({
@@ -204,6 +207,7 @@ function createPlanete(size, texture, position, ring) {
     return {mesh, obj}
 }
 
+//Creating orbits
 function createOrbit(ring, orbitColor){
     const ringGeo = new THREE.RingGeometry(
         ring.innerRadius,
@@ -224,6 +228,7 @@ function createOrbit(ring, orbitColor){
     
 }
 
+//Generating planets and orbits
 const mercury = createPlanete(3.2, mercuryTexture, 44);
 createOrbit({innerRadius: 43.5, outerRadius: 44}, 0xCC34EB);
 
@@ -261,10 +266,11 @@ createOrbit({innerRadius: 329.5, outerRadius: 330}, 0X1C59E8);
 const pluto = createPlanete(2.8, plutoTexture, 380);
 createOrbit({innerRadius: 379.5, outerRadius: 380}, 0XA8AEBD);
 
-
+//Pointlight initialization
 const pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);
 scene.add(pointLight);
 
+//Animate planets
 function animate() {
     //Self-rotation
     sun.rotateY(0.004);
@@ -309,17 +315,21 @@ function animate() {
     pluto.obj.rotateY(0.00015);
     pluto.obj.attach(plutoCamera);
 
-    //labelRenderer.render(scene, activeCamera);
     renderer.render(scene, activeCamera);
 }
 
 renderer.setAnimationLoop(animate);
 
-    window.addEventListener('resize', function() {
-        mainCamera.aspect = window.innerWidth / window.innerHeight;
-        mainCamera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+//Windows resizing
+window.addEventListener('resize', function() {
+    mainCamera.aspect = window.innerWidth / window.innerHeight;
+    mainCamera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+//Planet menu Bar
+createMenu();
+
 function createMenu(){
     const gui = new GUI();
 
@@ -361,35 +371,30 @@ function createMenu(){
 
     button = { Jowisz:function(){
         switchCamera('jupiter');
-
        }};
 
        gui.add(button,'Jowisz');
 
     button = { Saturn:function(){
         switchCamera('saturn');
-
        }};
 
        gui.add(button,'Saturn');
 
     button = { Uran:function(){
         switchCamera('uranus');
-
        }};
 
        gui.add(button,'Uran');
 
     button = { Neptun:function(){
         switchCamera('neptune');
-
        }};
 
     gui.add(button,'Neptun');
 
     button = { Pluton:function(){
         switchCamera('pluto');
-
        }};
 
     gui.add(button,'Pluton');
@@ -397,7 +402,7 @@ function createMenu(){
 
 }
 
-
+//Switching active camera
 function switchCamera(cameraName){
     switch(cameraName){
         case 'sun':{
@@ -458,34 +463,8 @@ function switchCamera(cameraName){
     }
 }
 
-const fadeInDuration = 1000; 
-const fadeInDelay = 500; 
-
-const fadeOutDuration = 1000; 
-const fadeOutDelay = 500;
-
-function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
-    const startTime = performance.now();
-  
-    function updateOpacity() {
-      const elapsedTime = performance.now() - startTime;
-      const progress = Math.min(elapsedTime / duration, 1);
-      const opacity = startOpacity + (endOpacity - startOpacity) * progress;
-      document.getElementById('background').style.opacity = opacity;
-  
-      if (progress < 1) {
-        requestAnimationFrame(updateOpacity);
-      } else {
-        if (onComplete) {
-          onComplete();
-        }
-      }
-    }
-  
-    updateOpacity();
-  }
-
-  function fadeControl(switchedCamera, planet){
+//Camera smooth switching (fade-in/fade-out)
+function fadeControl(switchedCamera, planet){
     if(activePlanetLabel !== undefined){
         fadeDiv(activePlanetLabel);
     }
@@ -518,6 +497,34 @@ function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
       }
   }
 
+const fadeInDuration = 1000; 
+const fadeInDelay = 500; 
+
+const fadeOutDuration = 1000; 
+const fadeOutDelay = 500;
+
+function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
+    const startTime = performance.now();
+  
+    function updateOpacity() {
+      const elapsedTime = performance.now() - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+      const opacity = startOpacity + (endOpacity - startOpacity) * progress;
+      document.getElementById('background').style.opacity = opacity;
+  
+      if (progress < 1) {
+        requestAnimationFrame(updateOpacity);
+      } else {
+        if (onComplete) {
+          onComplete();
+        }
+      }
+    }
+  
+    updateOpacity();
+  }
+
+  //Smooth appering of planet decription labels
   let activePlanetLabel;
 
   function changeLabel(planet){

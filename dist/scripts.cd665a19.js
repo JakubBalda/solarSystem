@@ -35792,131 +35792,7 @@ var index = {
 };
 var _default = index;
 exports.default = _default;
-},{}],"../node_modules/three/examples/jsm/renderers/CSS2DRenderer.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CSS2DRenderer = exports.CSS2DObject = void 0;
-var _three = require("three");
-class CSS2DObject extends _three.Object3D {
-  constructor(element) {
-    super();
-    this.element = element || document.createElement('div');
-    this.element.style.position = 'absolute';
-    this.element.style.userSelect = 'none';
-    this.element.setAttribute('draggable', false);
-    this.addEventListener('removed', function () {
-      this.traverse(function (object) {
-        if (object.element instanceof Element && object.element.parentNode !== null) {
-          object.element.parentNode.removeChild(object.element);
-        }
-      });
-    });
-  }
-  copy(source, recursive) {
-    super.copy(source, recursive);
-    this.element = source.element.cloneNode(true);
-    return this;
-  }
-}
-exports.CSS2DObject = CSS2DObject;
-CSS2DObject.prototype.isCSS2DObject = true;
-
-//
-
-const _vector = new _three.Vector3();
-const _viewMatrix = new _three.Matrix4();
-const _viewProjectionMatrix = new _three.Matrix4();
-const _a = new _three.Vector3();
-const _b = new _three.Vector3();
-class CSS2DRenderer {
-  constructor() {
-    const _this = this;
-    let _width, _height;
-    let _widthHalf, _heightHalf;
-    const cache = {
-      objects: new WeakMap()
-    };
-    const domElement = document.createElement('div');
-    domElement.style.overflow = 'hidden';
-    this.domElement = domElement;
-    this.getSize = function () {
-      return {
-        width: _width,
-        height: _height
-      };
-    };
-    this.render = function (scene, camera) {
-      if (scene.autoUpdate === true) scene.updateMatrixWorld();
-      if (camera.parent === null) camera.updateMatrixWorld();
-      _viewMatrix.copy(camera.matrixWorldInverse);
-      _viewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, _viewMatrix);
-      renderObject(scene, scene, camera);
-      zOrder(scene);
-    };
-    this.setSize = function (width, height) {
-      _width = width;
-      _height = height;
-      _widthHalf = _width / 2;
-      _heightHalf = _height / 2;
-      domElement.style.width = width + 'px';
-      domElement.style.height = height + 'px';
-    };
-    function renderObject(object, scene, camera) {
-      if (object.isCSS2DObject) {
-        object.onBeforeRender(_this, scene, camera);
-        _vector.setFromMatrixPosition(object.matrixWorld);
-        _vector.applyMatrix4(_viewProjectionMatrix);
-        const element = object.element;
-        if (/apple/i.test(navigator.vendor)) {
-          // https://github.com/mrdoob/three.js/issues/21415
-          element.style.transform = 'translate(-50%,-50%) translate(' + Math.round(_vector.x * _widthHalf + _widthHalf) + 'px,' + Math.round(-_vector.y * _heightHalf + _heightHalf) + 'px)';
-        } else {
-          element.style.transform = 'translate(-50%,-50%) translate(' + (_vector.x * _widthHalf + _widthHalf) + 'px,' + (-_vector.y * _heightHalf + _heightHalf) + 'px)';
-        }
-        element.style.display = object.visible && _vector.z >= -1 && _vector.z <= 1 ? '' : 'none';
-        const objectData = {
-          distanceToCameraSquared: getDistanceToSquared(camera, object)
-        };
-        cache.objects.set(object, objectData);
-        if (element.parentNode !== domElement) {
-          domElement.appendChild(element);
-        }
-        object.onAfterRender(_this, scene, camera);
-      }
-      for (let i = 0, l = object.children.length; i < l; i++) {
-        renderObject(object.children[i], scene, camera);
-      }
-    }
-    function getDistanceToSquared(object1, object2) {
-      _a.setFromMatrixPosition(object1.matrixWorld);
-      _b.setFromMatrixPosition(object2.matrixWorld);
-      return _a.distanceToSquared(_b);
-    }
-    function filterAndFlatten(scene) {
-      const result = [];
-      scene.traverse(function (object) {
-        if (object.isCSS2DObject) result.push(object);
-      });
-      return result;
-    }
-    function zOrder(scene) {
-      const sorted = filterAndFlatten(scene).sort(function (a, b) {
-        const distanceA = cache.objects.get(a).distanceToCameraSquared;
-        const distanceB = cache.objects.get(b).distanceToCameraSquared;
-        return distanceA - distanceB;
-      });
-      const zMax = sorted.length;
-      for (let i = 0, l = sorted.length; i < l; i++) {
-        sorted[i].element.style.zIndex = zMax - i;
-      }
-    }
-  }
-}
-exports.CSS2DRenderer = CSS2DRenderer;
-},{"three":"../node_modules/three/build/three.module.js"}],"img/stars.jpg":[function(require,module,exports) {
+},{}],"img/stars.jpg":[function(require,module,exports) {
 module.exports = "/stars.316fb27b.jpg";
 },{}],"img/sun.jpg":[function(require,module,exports) {
 module.exports = "/sun.9ca88d60.jpg";
@@ -35948,7 +35824,6 @@ module.exports = "/pluto.358dce19.jpg";
 var THREE = _interopRequireWildcard(require("three"));
 var _OrbitControls = require("three/examples/jsm/controls/OrbitControls.js");
 var _dat = require("dat.gui");
-var _CSS2DRenderer = require("three/examples/jsm/renderers/CSS2DRenderer");
 var _stars = _interopRequireDefault(require("../img/stars.jpg"));
 var _sun = _interopRequireDefault(require("../img/sun.jpg"));
 var _mercury = _interopRequireDefault(require("../img/mercury.jpg"));
@@ -35965,7 +35840,9 @@ var _pluto = _interopRequireDefault(require("../img/pluto.jpg"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-//import * as TWEEN from '@tweenjs/tween.js'
+//Importing libraries
+
+//Importing textures
 
 //Setup Scene
 var renderer = new THREE.WebGLRenderer();
@@ -35978,20 +35855,28 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.opacity = '1';
 var scene = new THREE.Scene();
+
+//Main camera initialization
 var mainCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 1000);
+
+//Main camera positioning and movement
 var orbit = new _OrbitControls.OrbitControls(mainCamera, renderer.domElement);
 orbit.minDistance = defaultCameraMinDistance;
 orbit.maxDistance = defaultCameraMaxDistance;
 mainCamera.position.set(defaultCameraX, defaultCameraY, defaultCameraZ);
 orbit.update();
 var activeCamera = mainCamera;
+
+//AmbientLignt initialization
 var ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
+
+//Background texture loader
 var cubeTextureLoader = new THREE.CubeTextureLoader();
 scene.background = cubeTextureLoader.load([_stars.default, _stars.default, _stars.default, _stars.default, _stars.default, _stars.default]);
 var textureLoader = new THREE.TextureLoader();
 
-//Planet cameras
+//Initalization planet cameras
 var sunCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 1000);
 sunCamera.position.set(80, 15, -25);
 sunCamera.lookAt(0, 0, -25);
@@ -36023,9 +35908,6 @@ var plutoCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.inn
 plutoCamera.position.set(365, 4, 4);
 plutoCamera.lookAt(380, 0, 4);
 
-//Menu Bar
-createMenu();
-
 //Planet render
 var sunGeo = new THREE.SphereGeometry(26, 40, 40);
 var sunMat = new THREE.MeshBasicMaterial({
@@ -36033,6 +35915,8 @@ var sunMat = new THREE.MeshBasicMaterial({
 });
 var sun = new THREE.Mesh(sunGeo, sunMat);
 scene.add(sun);
+
+//Creating planets
 function createPlanete(size, texture, position, ring) {
   var geo = new THREE.SphereGeometry(size, 30, 30);
   var mat = new THREE.MeshStandardMaterial({
@@ -36059,6 +35943,8 @@ function createPlanete(size, texture, position, ring) {
     obj: obj
   };
 }
+
+//Creating orbits
 function createOrbit(ring, orbitColor) {
   var ringGeo = new THREE.RingGeometry(ring.innerRadius, ring.outerRadius, 64);
   var ringMat = new THREE.MeshBasicMaterial({
@@ -36072,6 +35958,8 @@ function createOrbit(ring, orbitColor) {
   var vector3 = new THREE.Vector3(1, 0, 0);
   ringMesh.rotateOnAxis(vector3, 1.57);
 }
+
+//Generating planets and orbits
 var mercury = createPlanete(3.2, _mercury.default, 44);
 createOrbit({
   innerRadius: 43.5,
@@ -36126,8 +36014,12 @@ createOrbit({
   innerRadius: 379.5,
   outerRadius: 380
 }, 0XA8AEBD);
+
+//Pointlight initialization
 var pointLight = new THREE.PointLight(0xFFFFFF, 2, 300);
 scene.add(pointLight);
+
+//Animate planets
 function animate() {
   //Self-rotation
   sun.rotateY(0.004);
@@ -36162,16 +36054,19 @@ function animate() {
   neptune.obj.attach(neptuneCamera);
   pluto.obj.rotateY(0.00015);
   pluto.obj.attach(plutoCamera);
-
-  //labelRenderer.render(scene, activeCamera);
   renderer.render(scene, activeCamera);
 }
 renderer.setAnimationLoop(animate);
+
+//Windows resizing
 window.addEventListener('resize', function () {
   mainCamera.aspect = window.innerWidth / window.innerHeight;
   mainCamera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+//Planet menu Bar
+createMenu();
 function createMenu() {
   var gui = new _dat.GUI();
   var button = {
@@ -36241,6 +36136,8 @@ function createMenu() {
   };
   gui.add(button, 'Pluton');
 }
+
+//Switching active camera
 function switchCamera(cameraName) {
   switch (cameraName) {
     case 'sun':
@@ -36311,27 +36208,8 @@ function switchCamera(cameraName) {
       }
   }
 }
-var fadeInDuration = 1000;
-var fadeInDelay = 500;
-var fadeOutDuration = 1000;
-var fadeOutDelay = 500;
-function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
-  var startTime = performance.now();
-  function updateOpacity() {
-    var elapsedTime = performance.now() - startTime;
-    var progress = Math.min(elapsedTime / duration, 1);
-    var opacity = startOpacity + (endOpacity - startOpacity) * progress;
-    document.getElementById('background').style.opacity = opacity;
-    if (progress < 1) {
-      requestAnimationFrame(updateOpacity);
-    } else {
-      if (onComplete) {
-        onComplete();
-      }
-    }
-  }
-  updateOpacity();
-}
+
+//Camera smooth switching (fade-in/fade-out)
 function fadeControl(switchedCamera, planet) {
   if (activePlanetLabel !== undefined) {
     fadeDiv(activePlanetLabel);
@@ -36361,6 +36239,29 @@ function fadeControl(switchedCamera, planet) {
     }, 20);
   }
 }
+var fadeInDuration = 1000;
+var fadeInDelay = 500;
+var fadeOutDuration = 1000;
+var fadeOutDelay = 500;
+function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
+  var startTime = performance.now();
+  function updateOpacity() {
+    var elapsedTime = performance.now() - startTime;
+    var progress = Math.min(elapsedTime / duration, 1);
+    var opacity = startOpacity + (endOpacity - startOpacity) * progress;
+    document.getElementById('background').style.opacity = opacity;
+    if (progress < 1) {
+      requestAnimationFrame(updateOpacity);
+    } else {
+      if (onComplete) {
+        onComplete();
+      }
+    }
+  }
+  updateOpacity();
+}
+
+//Smooth appering of planet decription labels
 var activePlanetLabel;
 function changeLabel(planet) {
   if (activePlanetLabel !== undefined) {
@@ -36390,7 +36291,7 @@ function changeLabel(planet) {
     }, 30);
   }
 }
-},{"three":"../node_modules/three/build/three.module.js","three/examples/jsm/controls/OrbitControls.js":"../node_modules/three/examples/jsm/controls/OrbitControls.js","dat.gui":"../node_modules/dat.gui/build/dat.gui.module.js","three/examples/jsm/renderers/CSS2DRenderer":"../node_modules/three/examples/jsm/renderers/CSS2DRenderer.js","../img/stars.jpg":"img/stars.jpg","../img/sun.jpg":"img/sun.jpg","../img/mercury.jpg":"img/mercury.jpg","../img/venus.jpg":"img/venus.jpg","../img/earth.jpg":"img/earth.jpg","../img/mars.jpg":"img/mars.jpg","../img/jupiter.jpg":"img/jupiter.jpg","../img/saturn.jpg":"img/saturn.jpg","../img/saturn ring.png":"img/saturn ring.png","../img/uranus.jpg":"img/uranus.jpg","../img/uranus ring.png":"img/uranus ring.png","../img/neptune.jpg":"img/neptune.jpg","../img/pluto.jpg":"img/pluto.jpg"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"../node_modules/three/build/three.module.js","three/examples/jsm/controls/OrbitControls.js":"../node_modules/three/examples/jsm/controls/OrbitControls.js","dat.gui":"../node_modules/dat.gui/build/dat.gui.module.js","../img/stars.jpg":"img/stars.jpg","../img/sun.jpg":"img/sun.jpg","../img/mercury.jpg":"img/mercury.jpg","../img/venus.jpg":"img/venus.jpg","../img/earth.jpg":"img/earth.jpg","../img/mars.jpg":"img/mars.jpg","../img/jupiter.jpg":"img/jupiter.jpg","../img/saturn.jpg":"img/saturn.jpg","../img/saturn ring.png":"img/saturn ring.png","../img/uranus.jpg":"img/uranus.jpg","../img/uranus ring.png":"img/uranus ring.png","../img/neptune.jpg":"img/neptune.jpg","../img/pluto.jpg":"img/pluto.jpg"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
