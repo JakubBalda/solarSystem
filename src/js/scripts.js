@@ -171,7 +171,7 @@ const plutoCamera = new THREE.PerspectiveCamera(
 plutoCamera.position.set(365, 4, 4);
 plutoCamera.lookAt(380,0,4);
 
-//Planet render
+//Create sun
 const sunGeo = new THREE.SphereGeometry(26, 40, 40);
 const sunMat = new THREE.MeshBasicMaterial({
     map: textureLoader.load(sunTexture)

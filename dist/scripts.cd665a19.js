@@ -35908,7 +35908,7 @@ var plutoCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.inn
 plutoCamera.position.set(365, 4, 4);
 plutoCamera.lookAt(380, 0, 4);
 
-//Planet render
+//Create sun
 var sunGeo = new THREE.SphereGeometry(26, 40, 40);
 var sunMat = new THREE.MeshBasicMaterial({
   map: textureLoader.load(_sun.default)
@@ -36291,7 +36291,7 @@ function changeLabel(planet) {
     }, 30);
   }
 }
-},{"three":"../node_modules/three/build/three.module.js","three/examples/jsm/controls/OrbitControls.js":"../node_modules/three/examples/jsm/controls/OrbitControls.js","dat.gui":"../node_modules/dat.gui/build/dat.gui.module.js","../img/stars.jpg":"img/stars.jpg","../img/sun.jpg":"img/sun.jpg","../img/mercury.jpg":"img/mercury.jpg","../img/venus.jpg":"img/venus.jpg","../img/earth.jpg":"img/earth.jpg","../img/mars.jpg":"img/mars.jpg","../img/jupiter.jpg":"img/jupiter.jpg","../img/saturn.jpg":"img/saturn.jpg","../img/saturn ring.png":"img/saturn ring.png","../img/uranus.jpg":"img/uranus.jpg","../img/uranus ring.png":"img/uranus ring.png","../img/neptune.jpg":"img/neptune.jpg","../img/pluto.jpg":"img/pluto.jpg"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"../node_modules/three/build/three.module.js","three/examples/jsm/controls/OrbitControls.js":"../node_modules/three/examples/jsm/controls/OrbitControls.js","dat.gui":"../node_modules/dat.gui/build/dat.gui.module.js","../img/stars.jpg":"img/stars.jpg","../img/sun.jpg":"img/sun.jpg","../img/mercury.jpg":"img/mercury.jpg","../img/venus.jpg":"img/venus.jpg","../img/earth.jpg":"img/earth.jpg","../img/mars.jpg":"img/mars.jpg","../img/jupiter.jpg":"img/jupiter.jpg","../img/saturn.jpg":"img/saturn.jpg","../img/saturn ring.png":"img/saturn ring.png","../img/uranus.jpg":"img/uranus.jpg","../img/uranus ring.png":"img/uranus ring.png","../img/neptune.jpg":"img/neptune.jpg","../img/pluto.jpg":"img/pluto.jpg"}],"../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36316,7 +36316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59520" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61222" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -36460,5 +36460,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/scripts.js"], null)
+},{}]},{},["../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/scripts.js"], null)
 //# sourceMappingURL=/scripts.cd665a19.js.map
