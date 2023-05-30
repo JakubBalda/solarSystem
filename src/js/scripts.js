@@ -56,7 +56,6 @@ let activeCamera = mainCamera;
 const ambientLight = new THREE.AmbientLight(0x333333);
 scene.add(ambientLight);
 
-
 //Background texture loader
 const cubeTextureLoader = new THREE.CubeTextureLoader();
 scene.background = cubeTextureLoader.load([
@@ -185,9 +184,11 @@ function createPlanete(size, texture, position, ring) {
     const mat = new THREE.MeshStandardMaterial({
         map: textureLoader.load(texture)
     });
+
     const mesh = new THREE.Mesh(geo, mat);
     const obj = new THREE.Object3D();
     obj.add(mesh);
+
     if(ring) {
         const ringGeo = new THREE.RingGeometry(
             ring.innerRadius,
@@ -202,6 +203,7 @@ function createPlanete(size, texture, position, ring) {
         ringMesh.position.x = position;
         ringMesh.rotation.x = -0.5 * Math.PI;
     }
+
     scene.add(obj);
     mesh.position.x = position;
     return {mesh, obj}
@@ -404,6 +406,7 @@ function createMenu(){
 
 //Switching active camera
 function switchCamera(cameraName){
+
     switch(cameraName){
         case 'sun':{
             console.log('sunCase');
@@ -465,6 +468,7 @@ function switchCamera(cameraName){
 
 //Camera smooth switching (fade-in/fade-out)
 function fadeControl(switchedCamera, planet){
+
     if(activePlanetLabel !== undefined){
         fadeDiv(activePlanetLabel);
     }
@@ -528,6 +532,7 @@ function fadeOpacity(startOpacity, endOpacity, duration, onComplete) {
   let activePlanetLabel;
 
   function changeLabel(planet){
+    
     if(activePlanetLabel !== undefined){
         if(planet !== 'system'){
             document.getElementById(activePlanetLabel).style.display = 'none';
