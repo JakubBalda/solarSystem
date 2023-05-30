@@ -23,7 +23,7 @@ const renderer = new THREE.WebGLRenderer();
 const defaultCameraX = -90;
 const defaultCameraY = 140;
 const defaultCameraZ = 140;
-const defaultCameraMinDistance = 1;
+const defaultCameraMinDistance = 90;
 const defaultCameraMaxDistance = 800;
 
 renderer.setSize(window.innerWidth, window.innerHeight);

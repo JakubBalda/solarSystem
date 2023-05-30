@@ -35972,7 +35972,7 @@ var renderer = new THREE.WebGLRenderer();
 var defaultCameraX = -90;
 var defaultCameraY = 140;
 var defaultCameraZ = 140;
-var defaultCameraMinDistance = 1;
+var defaultCameraMinDistance = 90;
 var defaultCameraMaxDistance = 800;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -36415,7 +36415,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49905" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59520" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
