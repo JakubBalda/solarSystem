@@ -35896,8 +35896,8 @@ var jupiterCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.i
 jupiterCamera.position.set(136, 10, 12);
 jupiterCamera.lookAt(179, 0, 12);
 var saturnCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 1000);
-saturnCamera.position.set(187, 10, 10);
-saturnCamera.lookAt(235, 0, 10);
+saturnCamera.position.set(182, 10, 12);
+saturnCamera.lookAt(235, 0, 12);
 var uranusCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 1000);
 uranusCamera.position.set(250, 10, 10);
 uranusCamera.lookAt(293, 0, 10);

@@ -138,8 +138,8 @@ const saturnCamera = new THREE.PerspectiveCamera(
     1000
 );
 
-saturnCamera.position.set(187, 10, 10);
-saturnCamera.lookAt(235,0,10);
+saturnCamera.position.set(182, 10, 12);
+saturnCamera.lookAt(235,0,12);
 
 const uranusCamera = new THREE.PerspectiveCamera(
     45,
